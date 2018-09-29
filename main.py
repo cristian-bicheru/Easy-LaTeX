@@ -1,6 +1,7 @@
 equation = input()
 
 brackets = equation.count('{')
+inline = 0
 
 while True:
     breakC = 1
@@ -71,13 +72,38 @@ while True:
         breakC = 0
         pos = equation.find("dx")
         equation = equation[:pos]+"\\,\\,\\mathrm{d}x "+equation[pos+2:]
+    
     if "{spc}" in equation:
         breakC = 0
-        pos = equation.find(" ")
+        pos = equation.find("{spc}")
         equation = equation[:pos]+" \\, "+equation[pos+5:]
+
+    if "{el}" in equation:
+        breakC = 0
+        pos = equation.find("{el}")
+        equation = equation[:pos]+" \\\ "+equation[pos+4:]
+
+    if "*" in equation:
+        breakC = 0
+        pos = equation.find("*")
+        equation = equation[:pos]+" \\cdot "+equation[pos+1:]
+
+    if "..." in equation:
+        breakC = 0
+        pos = equation.find("...")
+        equation = equation[:pos]+" \\cdots "+equation[pos+3:] 
+
+    if "{inline}" in equation:
+        inline = 1
+        breakC = 0
+        pos = equation.find("{inline}")
+        equation = equation[:pos]+equation[pos+8:] 
+    
     if breakC == 1:
         break
 
-
-print("$$ "+equation+" $$")
+if inline == 0:
+    print("$$ "+equation+" $$")
+else:
+    print("$ "+equation+" $")
     
